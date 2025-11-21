@@ -1,0 +1,25 @@
+{
+  "scenes": {
+    "car_3": {
+      "base_description": "這是3號車廂，地板上散落著各式各樣的行李，空氣中瀰漫著一股陳舊的霉味。",
+      "exits": {
+        "forward": {
+          "target": "car_2",
+          "description": "前方是通往2號車廂的門，玻璃看過去一片漆黑。"
+        }
+      },
+      "items": ["old_key"]
+    },
+    "car_2": {
+      "base_description": "這是2號車廂，這裡沒有燈光，伸手不見五指。你能聽到奇怪的『喀塔、喀塔』聲從車廂深處傳來。",
+      "exits": {
+        "back": {
+          "target": "car_3",
+          "description": "後方是回到3號車廂的門，那裡比較安全。"
+        }
+      },
+      "items": []
+    }
+  },
+  "initial_scene": "car_3"
+}

@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  coc-game:
+    build: .
+    # 載入環境變數 (.env)
+    env_file:
+      - .env
+    # 掛載目錄：讓你改了 Python Code 不用重包 Docker 就能生效
+    volumes:
+      - .:/app
+    # === 關鍵設定：開啟互動模式 ===
+    stdin_open: true # 相當於 -i (Interactive)
+    tty: true        # 相當於 -t (TTY)
