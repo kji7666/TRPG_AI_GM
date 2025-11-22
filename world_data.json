@@ -1,259 +1,77 @@
 {
   "scenario_title": "常闇之廂",
   "initial_scene": "car_6",
+  "setting": {
+    "time_period": "2013年 (現代)",
+    "visual_style": "現代化地鐵車廂",
+    "atmosphere": "死寂、黑暗"
+  },
   "global_vars": {
     "turn_count": 0,
-    "flags": {
-      "knows_truth": false,
-      "conductor_saved": false,
-      "conductor_following": false,
-      "has_keys": false,
-      "door_unlocked": false,
-      "game_over": false
+    "flags": { "has_keys": false }
+  },
+  
+  "item_database": {
+    "rusty_keys": {
+      "name": "生鏽的鑰匙",
+      "description": "一把沉重的黃銅鑰匙，上面刻著『駕駛室』三個字。",
+      "type": "key"
+    },
+    "newspaper": {
+      "name": "明日報紙",
+      "description": "日期是明天的報紙，頭條令人不安。",
+      "type": "clue"
     }
   },
+
   "scenes": {
     "car_6": {
-      "base_description": "你從沉睡中醒來，發現自己身處 6 號車廂。車廂內空無一人，窗外是一片死寂的黑暗，只有列車行駛的單調轟鳴聲。這裡顯然不是終點站。",
-      "overlays": [],
+      "base_description": "你身處 6 號車廂。這是一節現代化的地鐵車廂。",
       "exits": {
-        "car_5": {
-          "keywords": ["前", "5號", "forward", "next"],
-          "description": "前方是通往 5 號車廂的門。",
-          "target": "car_5",
-          "locked": false
-        },
-        "car_7": {
-          "keywords": ["後", "7號", "back"],
-          "description": "後方是通往 7 號車廂的門，那裡感覺有些不對勁...",
-          "target": "car_7",
-          "locked": false
-        }
+        "car_5": { "keywords": ["前", "5號"], "target": "car_5" }
       },
       "interactables": {
         "sticky_note": {
-          "keywords": ["便條", "紙條", "門上的紙", "note"],
-          "description": "車門上貼著一張便條紙，上面潦草地寫著『只管前進吧，已經沒有退路了』。",
+          "keywords": ["便條", "紙條"],
+          "description": "車門上貼著一張便條紙。",
           "type": "check",
           "skill": "Spot Hidden",
           "difficulty": 20,
-          "success_msg": "你翻過便條紙，發現背面寫著一行小字：『第三個箱子裡藏著鑰匙』。",
-          "fail_msg": "你看了看便條紙的背面，什麼也沒發現。"
-        },
-        "map": {
-          "keywords": ["地圖", "示意圖", "map"],
-          "description": "門邊貼著電車路線圖。",
-          "type": "check",
-          "skill": "Idea",
-          "difficulty": 50,
-          "success_msg": "你仔細觀察地圖，發現 7 號車廂以後的部分被人用黑筆蓄意塗掉了，那裡似乎隱藏著某種不想讓人知道的秘密。",
-          "fail_msg": "這只是一張普通的電車路線圖。"
+          "on_success": [
+            { "type": "narrate", "content": "你翻過便條紙背面，發現一行小字：『第三個箱子裡藏著鑰匙』。" }
+          ],
+          "on_fail": [
+            { "type": "narrate", "content": "你看了看背面，什麼也沒發現。" }
+          ]
         }
       }
     },
-    "car_7": {
-      "base_description": "你推開門來到 7 號車廂...不，這裡幾乎不能稱之為車廂。空氣中瀰漫著濃烈的血腥味和肉塊腐爛的惡臭。",
-      "exits": {
-        "car_6": {
-          "keywords": ["逃跑", "回頭", "6號", "逃"],
-          "description": "回到 6 號車廂。",
-          "target": "car_6",
-          "locked": false
-        }
-      },
-      "interactables": {
-        "darkness": {
-          "keywords": ["深處", "黑暗", "看", "觀察"],
-          "description": "車廂深處一片漆黑，彷彿有什麼東西在蠕動。",
-          "type": "check",
-          "skill": "Spot Hidden",
-          "difficulty": 10,
-          "success_msg": "【SAN Check 1/1d6】藉著微光，你看見一張比電車還巨大的『嘴』正在緩慢地啃食著車廂末端！那絕非這個世界的生物。",
-          "fail_msg": "太黑了看不清楚，但那種生理上的恐懼感讓你本能地想要逃離。"
-        },
-        "body_parts": {
-          "keywords": ["屍體", "肢體", "血"],
-          "description": "地上散落著被撕裂的人類肢體。【SAN Check 0/1】",
-          "type": "check",
-          "skill": "Medicine",
-          "difficulty": 10,
-          "success_msg": "這些斷肢切口非常新鮮，死亡時間絕對不超過一小時。",
-          "fail_msg": "這場面太噁心了，你無法冷靜觀察。"
-        }
-      }
-    },
-    "car_5": {
-      "base_description": "這是 5 號車廂。乍看之下很普通，但座椅上放著一份無人閱讀的報紙。",
-      "overlays": [
-        {
-          "condition": "turn_count > 5",
-          "text": "後方的車廂傳來巨大的金屬扭曲聲，那張大嘴似乎越來越近了..."
-        }
-      ],
-      "exits": {
-        "car_4": {
-          "keywords": ["前", "4號", "forward"],
-          "target": "car_4",
-          "locked": false
-        },
-        "car_6": {
-          "keywords": ["後", "6號", "back"],
-          "target": "car_6",
-          "locked": false
-        }
-      },
-      "interactables": {
-        "newspaper": {
-          "keywords": ["報紙", "news"],
-          "description": "一份今天的早報...等等，上面的日期是『明天』。",
-          "type": "check",
-          "skill": "Library Use",
-          "difficulty": 10,
-          "success_msg": "【SAN Check 0/1】報紙頭條寫著：『昨晚末班電車遭遇大規模恐怖攻擊，乘客全體精神異常送醫』。這正是你們現在遭遇的事！",
-          "fail_msg": "報紙上寫著一些關於電車事故的新聞，讓你感到不安。"
-        }
-      }
-    },
-    "car_4": {
-      "base_description": "這是 4 號車廂。你看見一位穿著制服的乘務員倒在地上，制服上滲著血跡。",
-      "overlays": [
-        {
-          "condition": "conductor_saved == true",
-          "text": "乘務員京山雖然臉色蒼白，但已經恢復意識，正靠在座椅上休息。"
-        }
-      ],
-      "exits": {
-        "car_3": {
-          "keywords": ["前", "3號"],
-          "target": "car_3",
-          "locked": false
-        },
-        "car_5": {
-          "keywords": ["後", "5號"],
-          "target": "car_5",
-          "locked": false
-        }
-      },
-      "interactables": {
-        "conductor": {
-          "keywords": ["乘務員", "npc", "京山", "人"],
-          "description": "他呼吸微弱，大腿上有嚴重的咬傷。",
-          "type": "npc_interaction",
-          "skill": "First Aid",
-          "difficulty": 30,
-          "success_msg": "你成功止血並喚醒了乘務員。他告訴你：『怪物對聲音很敏感...鑰匙掉在 3 號車廂了...』(獲得情報：怪物弱點)",
-          "fail_msg": "他的傷勢太重，你只能勉強幫他包紮，但他仍處於半昏迷狀態。",
-          "on_success": { "set_flag": "conductor_saved=true" }
-        }
-      }
-    },
+    
     "car_3": {
-      "base_description": "這是 3 號車廂，滿地都是散落的行李，行走困難。",
+      "base_description": "這是 3 號車廂，滿地都是散落的行李。",
       "overlays": [
-        {
-          "condition": "has_keys == false",
-          "text": "在雜亂的行李深處，似乎有個反光的金屬物體。"
-        }
+        { "condition": "has_keys == false", "text": "在雜亂的行李深處，似乎有個反光的金屬物體。" }
       ],
       "exits": {
-        "car_2": {
-          "keywords": ["前", "2號"],
-          "description": "前方通往 2 號車廂，裡面一片漆黑，沒有任何燈光。",
-          "target": "car_2",
-          "locked": false
-        },
-        "car_4": {
-          "keywords": ["後", "4號"],
-          "target": "car_4",
-          "locked": false
-        }
+        "car_6": { "keywords": ["後", "6號"], "target": "car_6" }
       },
       "interactables": {
         "luggage": {
-          "keywords": ["行李", "反光", "鑰匙", "key"],
+          "keywords": ["行李", "反光", "鑰匙"],
           "description": "一堆雜亂的乘客行李。",
-          "type": "item_pickup",
-          "required_item_id": "rusty_keys", 
+          "type": "check",
           "skill": "Spot Hidden",
           "difficulty": 20,
-          "success_msg": "你在行李箱縫隙中找到了一串『駕駛室鑰匙』！",
-          "fail_msg": "這裡太亂了，你翻了半天什麼都沒找到。",
-          "on_success": { "set_flag": "has_keys=true", "add_item": "rusty_keys" }
-        }
-      }
-    },
-    "car_2": {
-      "base_description": "這是 2 號車廂。這裡伸手不見五指，黑暗深處傳來令人毛骨悚然的『喀塔、喀塔』聲。",
-      "overlays": [
-        {
-          "condition": "has_flashlight == true",
-          "text": "手電筒的光束照亮了車廂中段，你看見幾隻頭部像開花真菌般的怪物（循聲者）正在徘徊！【SAN Check 1/1d6】"
-        }
-      ],
-      "exits": {
-        "car_1": {
-          "keywords": ["前", "1號", "頭"],
-          "description": "前方是車頭駕駛室。",
-          "target": "car_1",
-          "locked": false,
-          "check_required": {
-            "skill": "Stealth",
-            "difficulty": 50,
-            "fail_consequence": "你發出了聲音！循聲者衝了過來！(HP -1d4)"
-          }
-        },
-        "car_3": {
-          "keywords": ["後", "3號"],
-          "target": "car_3",
-          "locked": false
-        }
-      },
-      "interactables": {
-        "monster": {
-          "keywords": ["怪物", "循聲者", "聲音"],
-          "description": "它們沒有眼睛，依靠聲音行動。",
-          "type": "check",
-          "skill": "Throw",
-          "difficulty": 40,
-          "success_msg": "你將隨身物品丟向遠處，怪物被聲音吸引走了。這是一條安全的通道！",
-          "fail_msg": "你丟歪了，物品撞到你腳邊，發出巨大的聲響..."
-        }
-      }
-    },
-    "car_1": {
-      "base_description": "這是 1 號車廂（駕駛室）。面前是一扇緊鎖的鐵門。",
-      "overlays": [
-        {
-          "condition": "door_unlocked == true",
-          "text": "駕駛室的門已經打開，控制台就在眼前。"
-        }
-      ],
-      "exits": {
-        "car_2": { "keywords": ["後", "2號"], "target": "car_2", "locked": false }
-      },
-      "interactables": {
-        "cab_door": {
-          "keywords": ["門", "door", "鎖"],
-          "description": "通往控制台的門。",
-          "type": "use_item",
-          "target_item": "rusty_keys",
-          "success_msg": "你用鑰匙打開了駕駛室的門！",
-          "on_success": { "set_flag": "door_unlocked=true" }
-        },
-        "control_panel": {
-          "keywords": ["控制台", "拉桿", "面板", "lever"],
-          "description": "控制台上有兩根拉桿。左邊是剎車，右邊是油門。你必須做出選擇。",
-          "type": "ending_choice",
-          "options": {
-            "accelerate": {
-              "keywords": ["加速", "油門", "推", "拉桿向下"],
-              "result_msg": "你猛地拉下加速桿！電車發出咆哮，白光吞噬了視野... (結局 A: 夢醒)"
-            },
-            "brake": {
-              "keywords": ["煞車", "減速", "停", "拉桿向上"],
-              "result_msg": "你拉起煞車桿。電車緩緩停下，四周陷入死寂。接著，咀嚼聲從四面八方傳來... (結局 B: 永遠的黑暗)"
-            }
-          }
+          
+          "on_success": [
+            { "type": "narrate", "content": "你在行李箱縫隙中找到了一串『駕駛室鑰匙』！" },
+            { "type": "add_item", "id": "rusty_keys" },
+            { "type": "set_flag", "key": "has_keys", "val": true }
+          ],
+          
+          "on_fail": [
+            { "type": "narrate", "content": "你翻了半天什麼都沒找到。" }
+          ]
         }
       }
     }
