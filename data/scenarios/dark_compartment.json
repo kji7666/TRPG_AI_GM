@@ -1,0 +1,172 @@
+{
+  "meta": {
+    "id": "dark_compartment",
+    "title": "常闇之廂",
+    "start_node_id": "car_6"
+  },
+  "nodes": {
+    "car_7": {
+      "id": "car_7",
+      "name": "7號車廂",
+      "type": "hazard_zone",
+      "tags": ["7號車廂", "死亡陷阱", "大嘴", "恐怖"],
+      "exits": {
+        "forward": "car_6"
+      },
+      "items": [],
+      "properties": {
+        "on_enter_check": {
+          "type": "sanity",
+          "cost": "1d6",
+          "reason": "visual_horror"
+        },
+        "is_deadly": true,
+        "death_condition": "stay_duration > 1"
+      }
+    },
+    "car_6": {
+      "id": "car_6",
+      "name": "6號車廂",
+      "type": "safe_zone",
+      "tags": ["6號車廂", "起始點", "便條紙"],
+      "exits": {
+        "forward": "car_5",
+        "backward": "car_7"
+      },
+      "items": ["note", "train_map"],
+      "properties": {}
+    },
+    "car_5": {
+      "id": "car_5",
+      "name": "5號車廂",
+      "type": "exploration_zone",
+      "tags": ["5號車廂", "震動", "報紙"],
+      "exits": {
+        "forward": "car_4",
+        "backward": "car_6"
+      },
+      "items": ["newspaper"],
+      "properties": {
+        "instability": true
+      }
+    },
+    "car_4": {
+      "id": "car_4",
+      "name": "4號車廂",
+      "type": "event_zone",
+      "tags": ["4號車廂", "乘務員", "血跡"],
+      "exits": {
+        "forward": "car_3",
+        "backward": "car_5"
+      },
+      "items": [],
+      "properties": {
+        "has_injured_npc": true,
+        "npc_id": "kyoyama"
+      }
+    },
+    "car_3": {
+      "id": "car_3",
+      "name": "3號車廂",
+      "type": "puzzle_zone",
+      "tags": ["3號車廂", "雜物", "鑰匙"],
+      "exits": {
+        "forward": "car_2",
+        "backward": "car_4"
+      },
+      "items": ["black_bag"],
+      "properties": {
+        "hazard": "clutter",
+        "movement_check": "DEX"
+      }
+    },
+    "car_2": {
+      "id": "car_2",
+      "name": "2號車廂",
+      "type": "combat_zone",
+      "tags": ["2號車廂", "循聲者", "黑暗"],
+      "exits": {
+        "forward": "car_1",
+        "backward": "car_3"
+      },
+      "items": [],
+      "properties": {
+        "is_dark": true,
+        "stealth_required": true,
+        "enemy_id": "clicker"
+      }
+    },
+    "car_1": {
+      "id": "car_1",
+      "name": "1號車廂",
+      "type": "interactive_zone",
+      "tags": ["1號車廂", "駕駛室門"],
+      "exits": {
+        "backward": "car_2",
+        "enter_cab": {
+          "target_node": "car_1_internal",
+          "locked": true,
+          "key_id": "driver_key",
+          "difficulty": 80
+        }
+      },
+      "items": [],
+      "properties": {}
+    },
+    "car_1_internal": {
+      "id": "car_1_internal",
+      "name": "駕駛室內部",
+      "type": "end_zone",
+      "tags": ["駕駛室內部", "控制台", "拉桿"],
+      "exits": {
+        "leave": "car_1"
+      },
+      "items": ["control_panel"],
+      "properties": {
+        "requires_startup_key": true
+      }
+    }
+  },
+  "items": {
+    "note": { "name": "便條紙", "tags": ["便條紙", "6號車廂"] },
+    "train_map": { "name": "電車路線圖", "tags": ["路線圖", "6號車廂"] },
+    "newspaper": { "name": "舊報紙", "tags": ["報紙", "5號車廂"] },
+    "black_bag": { 
+      "name": "黑色包包", 
+      "tags": ["黑色包包", "3號車廂"],
+      "contains": ["driver_key", "startup_key"],
+      "locked": false 
+    },
+    "driver_key": { "name": "駕駛室鑰匙", "tags": ["駕駛室鑰匙"] },
+    "startup_key": { "name": "啟動鑰匙", "tags": ["啟動鑰匙"] },
+    "control_panel": { "name": "電車控制台", "tags": ["控制台", "拉桿"], "immovable": true }
+  },
+  "npcs": [
+    {
+      "id": "kyoyama",
+      "name": "京山 人吉",
+      "tags": ["京山", "乘務員", "4號車廂"],
+      "initial_location": "car_4",
+      "stats": { "HP": 4, "SAN": 20 },
+      "state": "unconscious"
+    }
+  ],
+  "global_events": [
+    {
+      "id": "car_7_destroyed",
+      "trigger": "turn_end",
+      "condition": "world.turn_count == 6",
+      "effect_type": "modify_state",
+      "effect_params": { "path": "world.flags.car_7_destroyed", "value": true, "operation": "set" },
+      "narrative_tags": ["7號車廂崩壞", "大嘴"]
+    },
+    {
+      "id": "car_6_destroyed",
+      "trigger": "turn_end",
+      "condition": "world.turn_count == 10",
+      "effect_type": "modify_state",
+      "effect_params": { "path": "world.flags.car_6_destroyed", "value": true, "operation": "set" },
+      "narrative_tags": ["6號車廂崩壞", "大嘴"]
+    }
+  ]
+}

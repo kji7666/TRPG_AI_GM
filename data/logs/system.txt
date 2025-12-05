@@ -1,0 +1,1296 @@
+[NPCEngine.__init__]
+[main] start
+[main] load 劇本
+[ScenarioLoader.load] load json to Scenario
+[main] load player
+[main] set state
+[UniversalTools.__init__] game, retriever
+[RAGRetriever.__init__]
+ReActAgent.__init__] tools, system_prompt
+[SystemPromptBuilder.get_prompt] 提供 system prompt (tool 使用方式)
+[EventEngine.__init__] game, tools
+[main] 初始化結束
+[main] 新增短期記憶緩衝區
+[main] 迴圈開始
+[ReActAgent.step] prompt 整理 : GameState, history
+[GameState.to_json] Converting state to JSON for LLM
+[SystemPromptBuilder.get_user_prompt] 格式化 user prompt
+[ReActAgent.step] ReAct loop start
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+We need to call search_knowledge with appropriate query.{"tool": "search_knowledge", "params": {"query": "6號車廂 視覺 描述 聽覺 描述 氣味 描述"} }
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 6號車廂 視覺 描述 聽覺 描述 氣味 描述
+[RAGRetriever.query] 查詢 : 6號車廂 視覺 描述 聽覺 描述 氣味 描述
+[UniversalTools.search_knowledge] result關於「6號車廂 視覺 描述 聽覺 描述 氣味 描述」的檢索結果：
+
+[資料 1] (來源: room.txt)
+------------------------------
+【場景：2號車廂 (怪物巢穴)】
+關鍵字：2號車廂, 黑暗, 喘息聲, 循聲者, 腐臭
+描述：一片漆黑，沒有燈光。這是通往駕駛室的必經之路。
+視覺：伸手不見五指的黑暗。若有光源，可看見怪物徘徊的身影。
+聽覺：安靜得可怕，但仔細聽可以聽到令人毛骨悚然的「喀...喀...」喘息聲就在附近。
+氣味：空氣中瀰漫著一股像黴菌般的腐臭味。
+現況：這裡有循聲者在遊蕩。必須保持安靜通過。
+------------------------------
+
+[資料 2] (來源: skill.txt)
+------------------------------
+【技能：Listen (聆聽)】
+關鍵字：聽聲音, 偷聽, 警覺, 腳步聲
+描述：分辨聲音、偷聽對話、察覺門後聲響。也代表角色的基本警覺性。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "6號車廂 電車 末班 車廂 描述 視覺 聽覺 氣味"} }你在昏暗的車廂裡站定，四周彷彿被時間遺忘。牆壁的金屬板上覆蓋著斑駁的油漆，偶有剝落的痕跡，露出暗沉的鋼鐵本色。車廂的頂部燈光早已熄滅，只剩幾盞微弱的緊急指示燈閃爍，發出冷淡的紅光，投射出長長的陰影。
+
+空氣中瀰漫著陳舊的霉味，混合著金屬氧化的酸腐氣息，讓人不自覺地收緊胸口。偶爾傳來遠處車輪與鐵軌摩擦的低沉嗡鳴，像是沉睡的機械在暗處低語。車廂的盡頭傳來斷斷續續的金屬碰撞聲，彷彿有什麼東西在不斷撞擊車壁，聲音被厚重的金屬所吸收，只剩回音在空間中迴盪。
+
+地面覆蓋著一層薄薄的灰塵，腳步踏上去會發出輕微的沙沙聲，提醒著這裡已久未有人踏足。牆角堆放著幾張發黃的便條紙，紙張已被潮濕的空氣浸潤，邊緣卷曲，字跡模糊不清。整個車廂彷彿在等待，沉默而壓抑，只有那微弱的紅光與遠處的金屬回響提醒你仍身處於這條無盡的夜行軌道。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 6號車廂 電車 末班 車廂 描述 視覺 聽覺 氣味
+[RAGRetriever.query] 查詢 : 6號車廂 電車 末班 車廂 描述 視覺 聽覺 氣味
+[UniversalTools.search_knowledge] result關於「6號車廂 電車 末班 車廂 描述 視覺 聽覺 氣味」的檢索結果：
+
+[資料 1] (來源: room.txt)
+------------------------------
+【場景：6號車廂 (起始點)】
+關鍵字：起點, 醒來, 便條紙, 6號車廂, 聲音, 氣味, 燈光, 安全
+描述：這是玩家醒來的初始地點。車廂內除了玩家空無一人。
+視覺：頭頂的日光燈管老舊，不斷忽明忽滅，車廂內部光影閃爍。窗外是一片死寂的漆黑，看不到任何景色。門邊貼著一張便條紙和電車路線圖。
+聽覺：車廂內相對安靜，只有日光燈發出的「滋...滋...」電流聲，以及列車行駛在鐵軌上單調的規律震動聲。
+氣味：空氣中瀰漫著一股陳舊的灰塵味，以及淡淡的金屬鐵鏽味，沒有明顯的血腥味。
+物品：車門上貼著一張便條紙，寫著「只管前進吧 已經沒有退路了」。
+線索：便條紙的背面寫著「第三個箱子裡有藏著鑰匙」（暗示3號車廂）。
+地圖資訊：門邊的電車地圖顯示，7號車廂以後的部分被人蓄意塗黑了。
+------------------------------
+
+[資料 2] (來源: lore.txt)
+------------------------------
+【環境設定：大嘴與車廂吞噬】
+現象：這列電車正在從尾端（7號車廂方向）被一個巨大的「黑暗之口」吞噬。
+規則：每一回合或每隔一段時間，末尾的車廂就會消失。
+視覺：7號車廂已經充滿了像內臟般的紅色肉塊與被撕碎的肢體。
+威脅：如果玩家在同一節車廂停留太久，或者試圖往回走，會面臨被吞噬的風險（即死或極高傷害）。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+車廂的日光燈管老舊而搖曳，忽明忽暗地劃過昏暗的空間。光線在金屬座椅與牆壁上投下斑駁的陰影，窗外是一片死寂的黑暗，毫無景物可辨。車門旁貼著一張便條紙，正面寫著「只管前進吧 已經沒有退路了」，背面則註記「第三個箱子裡有藏著鑰匙」。
+
+空氣中彌漫著陳舊的灰塵味，混合著淡淡的鐵鏽腐蝕味。唯一的聲響是日光燈發出的「滋…滋…」電流嗡鳴，與列車在鐵軌上行駛時傳來的單調震動聲，兩者交織成沉悶的背景嗡嗡。整個車廂靜得像被時間凍結，只有微弱的燈光與機械的低語提醒你仍身處於這條無盡的夜行軌道。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] ReAct 結束
+[main] 迴圈開始
+[main] 玩家輸入: 前往車廂4
+[main] 構建 Context
+[ReActAgent.step] prompt 整理 : GameState, history
+[GameState.to_json] Converting state to JSON for LLM
+[SystemPromptBuilder.get_user_prompt] 格式化 user prompt
+[ReActAgent.step] ReAct loop start
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "modify_state", "params": {"path": "world.location", "value": "4號車廂", "operation": "set"}}
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool modify_state by response
+[ReActAgent.step] modify_state 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+你试图直接前往4号车厢，但车厢之间没有相连的通道，无法一次性到达。你仍然停留在6号车厢。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] ReAct 結束
+[main] 迴圈開始
+[main] 玩家輸入: 前往車廂5
+[main] 構建 Context
+[ReActAgent.step] prompt 整理 : GameState, history
+[GameState.to_json] Converting state to JSON for LLM
+[SystemPromptBuilder.get_user_prompt] 格式化 user prompt
+[ReActAgent.step] ReAct loop start
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "末班電車 車廂 6 5 連接 位置"} }
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 末班電車 車廂 6 5 連接 位置
+[RAGRetriever.query] 查詢 : 末班電車 車廂 6 5 連接 位置
+[UniversalTools.search_knowledge] result關於「末班電車 車廂 6 5 連接 位置」的檢索結果：
+
+[資料 1] (來源: room.txt)
+------------------------------
+【場景：6號車廂 (起始點)】
+關鍵字：起點, 醒來, 便條紙, 6號車廂, 聲音, 氣味, 燈光, 安全
+描述：這是玩家醒來的初始地點。車廂內除了玩家空無一人。
+視覺：頭頂的日光燈管老舊，不斷忽明忽滅，車廂內部光影閃爍。窗外是一片死寂的漆黑，看不到任何景色。門邊貼著一張便條紙和電車路線圖。
+聽覺：車廂內相對安靜，只有日光燈發出的「滋...滋...」電流聲，以及列車行駛在鐵軌上單調的規律震動聲。
+氣味：空氣中瀰漫著一股陳舊的灰塵味，以及淡淡的金屬鐵鏽味，沒有明顯的血腥味。
+物品：車門上貼著一張便條紙，寫著「只管前進吧 已經沒有退路了」。
+線索：便條紙的背面寫著「第三個箱子裡有藏著鑰匙」（暗示3號車廂）。
+地圖資訊：門邊的電車地圖顯示，7號車廂以後的部分被人蓄意塗黑了。
+------------------------------
+
+[資料 2] (來源: room.txt)
+------------------------------
+【場景：5號車廂 (報紙線索)】
+關鍵字：5號車廂, 報紙, 新聞, 日期, 震動, 搖晃
+描述：這節車廂地板在微微震動，彷彿後方有東西在逼近。
+視覺：車廂結構似乎有些不穩，偶爾會劇烈搖晃。座位上有一份被遺落的報紙。
+聽覺：除了列車行駛聲，還能聽到後方傳來沈悶的崩塌聲。
+物品：座位上有一份皺巴巴的報紙。
+線索：報紙的日期竟然是「明天」。內容報導了「昨晚末班電車遭遇大規模恐怖事件，倖存者精神異常」。這暗示玩家可能處於時空錯亂或夢境中。
+環境變化：此時回頭看，會發現6號車廂的一半已經消失在黑暗中。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "modify_state", "params": {"path": "world.location", "value": "5號車廂", "operation": "set"}}你推开相邻的车门，进入了5号车厢。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool modify_state by response
+[ReActAgent.step] modify_state 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+你尝试从6号车厢直接前往5号车厢，但两节车厢之间没有相连的通道，移动失败。你仍然停留在6号车厢。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] ReAct 結束
+[main] 觸發長期記憶摘要
+[MemoryManager.summarize] create prompt
+[MemoryManager.summarize] LLM summary
+[main] 迴圈開始
+[NPCEngine.__init__]
+[main] start
+[main] load 劇本
+[ScenarioLoader.load] load json to Scenario
+[main] load player
+[main] set state
+[UniversalTools.__init__] game, retriever
+[RAGRetriever.__init__]
+ReActAgent.__init__] tools, system_prompt
+[SystemPromptBuilder.get_prompt] 提供 system prompt (tool 使用方式)
+[EventEngine.__init__] game, tools
+[main] 初始化結束
+[main] 新增短期記憶緩衝區
+[main] 迴圈開始
+[ReActAgent.step] prompt 整理 : GameState, history
+[GameState.to_json] Converting state to JSON for LLM
+[SystemPromptBuilder.get_user_prompt] 格式化 user prompt
+[ReActAgent.step] ReAct loop start
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "6號車廂 视觉 描述 听觉 气味"} }
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 6號車廂 视觉 描述 听觉 气味
+[RAGRetriever.query] 查詢 : 6號車廂 视觉 描述 听觉 气味
+[UniversalTools.search_knowledge] result關於「6號車廂 视觉 描述 听觉 气味」的檢索結果：
+
+[資料 1] (來源: room.txt)
+------------------------------
+【場景：2號車廂 (怪物巢穴)】
+關鍵字：2號車廂, 黑暗, 喘息聲, 循聲者, 腐臭
+描述：一片漆黑，沒有燈光。這是通往駕駛室的必經之路。
+視覺：伸手不見五指的黑暗。若有光源，可看見怪物徘徊的身影。
+聽覺：安靜得可怕，但仔細聽可以聽到令人毛骨悚然的「喀...喀...」喘息聲就在附近。
+氣味：空氣中瀰漫著一股像黴菌般的腐臭味。
+現況：這裡有循聲者在遊蕩。必須保持安靜通過。
+------------------------------
+
+[資料 2] (來源: room.txt)
+------------------------------
+【場景：6號車廂 (起始點)】
+關鍵字：起點, 醒來, 便條紙, 6號車廂, 聲音, 氣味, 燈光, 安全
+描述：這是玩家醒來的初始地點。車廂內除了玩家空無一人。
+視覺：頭頂的日光燈管老舊，不斷忽明忽滅，車廂內部光影閃爍。窗外是一片死寂的漆黑，看不到任何景色。門邊貼著一張便條紙和電車路線圖。
+聽覺：車廂內相對安靜，只有日光燈發出的「滋...滋...」電流聲，以及列車行駛在鐵軌上單調的規律震動聲。
+氣味：空氣中瀰漫著一股陳舊的灰塵味，以及淡淡的金屬鐵鏽味，沒有明顯的血腥味。
+物品：車門上貼著一張便條紙，寫著「只管前進吧 已經沒有退路了」。
+線索：便條紙的背面寫著「第三個箱子裡有藏著鑰匙」（暗示3號車廂）。
+地圖資訊：門邊的電車地圖顯示，7號車廂以後的部分被人蓄意塗黑了。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+車廂的日光燈管老舊，光線忽明忽滅，投射出斑駁的陰影。窗外是一片死寂的黑暗，沒有任何景物可辨。車門旁貼著一張便條紙，正面寫著「只管前進吧 已經沒有退路了」，背面則註明「第三個箱子裡有藏著鑰匙」。空氣中充斥著陳舊的灰塵味，混雜著淡淡的金屬鐵鏽味。唯一的聲響是日光燈發出的「滋…滋…」電流嗡鳴，和列車在鐵軌上行駛時傳來的單調震動聲。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] ReAct 結束
+[main] 迴圈開始
+[main] 玩家輸入: 前往4號車廂
+[main] 構建 Context
+[ReActAgent.step] prompt 整理 : GameState, history
+[GameState.to_json] Converting state to JSON for LLM
+[SystemPromptBuilder.get_user_prompt] 格式化 user prompt
+[ReActAgent.step] ReAct loop start
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "modify_state", "params": {"path": "world.location", "value": "4號車廂", "operation": "set"}}
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool modify_state by response
+[ReActAgent.step] modify_state 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+你無法直接從 6 號車廂走到 4 號車廂。必須先前往相鄰的 5 號車廂，再向前移動。請決定下一步行動。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] ReAct 結束
+[main] 迴圈開始
+[main] 玩家輸入: 前往5號車廂
+[main] 構建 Context
+[ReActAgent.step] prompt 整理 : GameState, history
+[GameState.to_json] Converting state to JSON for LLM
+[SystemPromptBuilder.get_user_prompt] 格式化 user prompt
+[ReActAgent.step] ReAct loop start
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "modify_state", "params": {"path": "world.location", "value": "5號車廂", "operation": "set"}}你推开相邻的车门，走进了5号车厢。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool modify_state by response
+[ReActAgent.step] modify_state 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+（已在5号车厢）
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] ReAct 結束
+[main] 觸發長期記憶摘要
+[MemoryManager.summarize] create prompt
+[MemoryManager.summarize] LLM summary
+[main] 迴圈開始
+[ReActAgent.step] prompt 整理 : GameState, history
+[GameState.to_json] Converting state to JSON for LLM
+[SystemPromptBuilder.get_user_prompt] 格式化 user prompt
+[ReActAgent.step] ReAct loop start
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "5號車廂 視覺 描述 聽覺 描述 氣味 描述"} }（等待系統回傳查詢結果）
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 5號車廂 視覺 描述 聽覺 描述 氣味 描述
+[RAGRetriever.query] 查詢 : 5號車廂 視覺 描述 聽覺 描述 氣味 描述
+[UniversalTools.search_knowledge] result關於「5號車廂 視覺 描述 聽覺 描述 氣味 描述」的檢索結果：
+
+[資料 1] (來源: room.txt)
+------------------------------
+【場景：2號車廂 (怪物巢穴)】
+關鍵字：2號車廂, 黑暗, 喘息聲, 循聲者, 腐臭
+描述：一片漆黑，沒有燈光。這是通往駕駛室的必經之路。
+視覺：伸手不見五指的黑暗。若有光源，可看見怪物徘徊的身影。
+聽覺：安靜得可怕，但仔細聽可以聽到令人毛骨悚然的「喀...喀...」喘息聲就在附近。
+氣味：空氣中瀰漫著一股像黴菌般的腐臭味。
+現況：這裡有循聲者在遊蕩。必須保持安靜通過。
+------------------------------
+
+[資料 2] (來源: skill.txt)
+------------------------------
+【技能：Listen (聆聽)】
+關鍵字：聽聲音, 偷聽, 警覺, 腳步聲
+描述：分辨聲音、偷聽對話、察覺門後聲響。也代表角色的基本警覺性。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "5號車廂 視覺 描述"} }
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 5號車廂 視覺 描述
+[RAGRetriever.query] 查詢 : 5號車廂 視覺 描述
+[UniversalTools.search_knowledge] result關於「5號車廂 視覺 描述」的檢索結果：
+
+[資料 1] (來源: room.txt)
+------------------------------
+【場景：5號車廂 (報紙線索)】
+關鍵字：5號車廂, 報紙, 新聞, 日期, 震動, 搖晃
+描述：這節車廂地板在微微震動，彷彿後方有東西在逼近。
+視覺：車廂結構似乎有些不穩，偶爾會劇烈搖晃。座位上有一份被遺落的報紙。
+聽覺：除了列車行駛聲，還能聽到後方傳來沈悶的崩塌聲。
+物品：座位上有一份皺巴巴的報紙。
+線索：報紙的日期竟然是「明天」。內容報導了「昨晚末班電車遭遇大規模恐怖事件，倖存者精神異常」。這暗示玩家可能處於時空錯亂或夢境中。
+環境變化：此時回頭看，會發現6號車廂的一半已經消失在黑暗中。
+------------------------------
+
+[資料 2] (來源: room.txt)
+------------------------------
+【場景：6號車廂 (起始點)】
+關鍵字：起點, 醒來, 便條紙, 6號車廂, 聲音, 氣味, 燈光, 安全
+描述：這是玩家醒來的初始地點。車廂內除了玩家空無一人。
+視覺：頭頂的日光燈管老舊，不斷忽明忽滅，車廂內部光影閃爍。窗外是一片死寂的漆黑，看不到任何景色。門邊貼著一張便條紙和電車路線圖。
+聽覺：車廂內相對安靜，只有日光燈發出的「滋...滋...」電流聲，以及列車行駛在鐵軌上單調的規律震動聲。
+氣味：空氣中瀰漫著一股陳舊的灰塵味，以及淡淡的金屬鐵鏽味，沒有明顯的血腥味。
+物品：車門上貼著一張便條紙，寫著「只管前進吧 已經沒有退路了」。
+線索：便條紙的背面寫著「第三個箱子裡有藏著鑰匙」（暗示3號車廂）。
+地圖資訊：門邊的電車地圖顯示，7號車廂以後的部分被人蓄意塗黑了。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "5號車廂 聽覺 描述"} }{"tool": "search_knowledge", "params": {"query": "5號車廂 氣味 描述"} }【陰鬱描寫】
+
+車廂的金屬骨架在微微顫抖，彷彿有什麼沉重的東西在遠處蠶食鐵軌。座位的塑膠覆層已被時間侵蝕，偶爾發出嘎吱聲，整體結構顯得不穩。地板上散落一張皺巴巴的報紙，紙張邊緣被汗濕的指紋抹得模糊不清。
+
+列車的轟鳴持續回盪，低沉的金屬碰撞聲在車廂內迴盪。從車廂後方傳來沉悶的坍塌聲，像是什麼在牆壁之後崩裂、塌陷，回聲在空曠的空間裡擴散。
+
+空氣中瀰漫著陳舊灰塵與鐵鏽的刺鼻氣味，混合著一絲腐敗的潮濕味道，讓人不自覺地屏住呼吸。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 5號車廂 聽覺 描述
+[RAGRetriever.query] 查詢 : 5號車廂 聽覺 描述
+[UniversalTools.search_knowledge] result關於「5號車廂 聽覺 描述」的檢索結果：
+
+[資料 1] (來源: room.txt)
+------------------------------
+【場景：5號車廂 (報紙線索)】
+關鍵字：5號車廂, 報紙, 新聞, 日期, 震動, 搖晃
+描述：這節車廂地板在微微震動，彷彿後方有東西在逼近。
+視覺：車廂結構似乎有些不穩，偶爾會劇烈搖晃。座位上有一份被遺落的報紙。
+聽覺：除了列車行駛聲，還能聽到後方傳來沈悶的崩塌聲。
+物品：座位上有一份皺巴巴的報紙。
+線索：報紙的日期竟然是「明天」。內容報導了「昨晚末班電車遭遇大規模恐怖事件，倖存者精神異常」。這暗示玩家可能處於時空錯亂或夢境中。
+環境變化：此時回頭看，會發現6號車廂的一半已經消失在黑暗中。
+------------------------------
+
+[資料 2] (來源: room.txt)
+------------------------------
+【場景：6號車廂 (起始點)】
+關鍵字：起點, 醒來, 便條紙, 6號車廂, 聲音, 氣味, 燈光, 安全
+描述：這是玩家醒來的初始地點。車廂內除了玩家空無一人。
+視覺：頭頂的日光燈管老舊，不斷忽明忽滅，車廂內部光影閃爍。窗外是一片死寂的漆黑，看不到任何景色。門邊貼著一張便條紙和電車路線圖。
+聽覺：車廂內相對安靜，只有日光燈發出的「滋...滋...」電流聲，以及列車行駛在鐵軌上單調的規律震動聲。
+氣味：空氣中瀰漫著一股陳舊的灰塵味，以及淡淡的金屬鐵鏽味，沒有明顯的血腥味。
+物品：車門上貼著一張便條紙，寫著「只管前進吧 已經沒有退路了」。
+線索：便條紙的背面寫著「第三個箱子裡有藏著鑰匙」（暗示3號車廂）。
+地圖資訊：門邊的電車地圖顯示，7號車廂以後的部分被人蓄意塗黑了。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "5號車廂 氣味 描述"} }
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 5號車廂 氣味 描述
+[RAGRetriever.query] 查詢 : 5號車廂 氣味 描述
+[UniversalTools.search_knowledge] result關於「5號車廂 氣味 描述」的檢索結果：
+
+[資料 1] (來源: room.txt)
+------------------------------
+【場景：2號車廂 (怪物巢穴)】
+關鍵字：2號車廂, 黑暗, 喘息聲, 循聲者, 腐臭
+描述：一片漆黑，沒有燈光。這是通往駕駛室的必經之路。
+視覺：伸手不見五指的黑暗。若有光源，可看見怪物徘徊的身影。
+聽覺：安靜得可怕，但仔細聽可以聽到令人毛骨悚然的「喀...喀...」喘息聲就在附近。
+氣味：空氣中瀰漫著一股像黴菌般的腐臭味。
+現況：這裡有循聲者在遊蕩。必須保持安靜通過。
+------------------------------
+
+[資料 2] (來源: room.txt)
+------------------------------
+【場景：6號車廂 (起始點)】
+關鍵字：起點, 醒來, 便條紙, 6號車廂, 聲音, 氣味, 燈光, 安全
+描述：這是玩家醒來的初始地點。車廂內除了玩家空無一人。
+視覺：頭頂的日光燈管老舊，不斷忽明忽滅，車廂內部光影閃爍。窗外是一片死寂的漆黑，看不到任何景色。門邊貼著一張便條紙和電車路線圖。
+聽覺：車廂內相對安靜，只有日光燈發出的「滋...滋...」電流聲，以及列車行駛在鐵軌上單調的規律震動聲。
+氣味：空氣中瀰漫著一股陳舊的灰塵味，以及淡淡的金屬鐵鏽味，沒有明顯的血腥味。
+物品：車門上貼著一張便條紙，寫著「只管前進吧 已經沒有退路了」。
+線索：便條紙的背面寫著「第三個箱子裡有藏著鑰匙」（暗示3號車廂）。
+地圖資訊：門邊的電車地圖顯示，7號車廂以後的部分被人蓄意塗黑了。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "5號車廂 氣味 描述"} }
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 5號車廂 氣味 描述
+[RAGRetriever.query] 查詢 : 5號車廂 氣味 描述
+[UniversalTools.search_knowledge] result關於「5號車廂 氣味 描述」的檢索結果：
+
+[資料 1] (來源: room.txt)
+------------------------------
+【場景：2號車廂 (怪物巢穴)】
+關鍵字：2號車廂, 黑暗, 喘息聲, 循聲者, 腐臭
+描述：一片漆黑，沒有燈光。這是通往駕駛室的必經之路。
+視覺：伸手不見五指的黑暗。若有光源，可看見怪物徘徊的身影。
+聽覺：安靜得可怕，但仔細聽可以聽到令人毛骨悚然的「喀...喀...」喘息聲就在附近。
+氣味：空氣中瀰漫著一股像黴菌般的腐臭味。
+現況：這裡有循聲者在遊蕩。必須保持安靜通過。
+------------------------------
+
+[資料 2] (來源: room.txt)
+------------------------------
+【場景：6號車廂 (起始點)】
+關鍵字：起點, 醒來, 便條紙, 6號車廂, 聲音, 氣味, 燈光, 安全
+描述：這是玩家醒來的初始地點。車廂內除了玩家空無一人。
+視覺：頭頂的日光燈管老舊，不斷忽明忽滅，車廂內部光影閃爍。窗外是一片死寂的漆黑，看不到任何景色。門邊貼著一張便條紙和電車路線圖。
+聽覺：車廂內相對安靜，只有日光燈發出的「滋...滋...」電流聲，以及列車行駛在鐵軌上單調的規律震動聲。
+氣味：空氣中瀰漫著一股陳舊的灰塵味，以及淡淡的金屬鐵鏽味，沒有明顯的血腥味。
+物品：車門上貼著一張便條紙，寫著「只管前進吧 已經沒有退路了」。
+線索：便條紙的背面寫著「第三個箱子裡有藏著鑰匙」（暗示3號車廂）。
+地圖資訊：門邊的電車地圖顯示，7號車廂以後的部分被人蓄意塗黑了。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "5號車廂 環境 氣味"} }
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 5號車廂 環境 氣味
+[RAGRetriever.query] 查詢 : 5號車廂 環境 氣味
+[UniversalTools.search_knowledge] result關於「5號車廂 環境 氣味」的檢索結果：
+
+[資料 1] (來源: room.txt)
+------------------------------
+【場景：2號車廂 (怪物巢穴)】
+關鍵字：2號車廂, 黑暗, 喘息聲, 循聲者, 腐臭
+描述：一片漆黑，沒有燈光。這是通往駕駛室的必經之路。
+視覺：伸手不見五指的黑暗。若有光源，可看見怪物徘徊的身影。
+聽覺：安靜得可怕，但仔細聽可以聽到令人毛骨悚然的「喀...喀...」喘息聲就在附近。
+氣味：空氣中瀰漫著一股像黴菌般的腐臭味。
+現況：這裡有循聲者在遊蕩。必須保持安靜通過。
+------------------------------
+
+[資料 2] (來源: room.txt)
+------------------------------
+【場景：6號車廂 (起始點)】
+關鍵字：起點, 醒來, 便條紙, 6號車廂, 聲音, 氣味, 燈光, 安全
+描述：這是玩家醒來的初始地點。車廂內除了玩家空無一人。
+視覺：頭頂的日光燈管老舊，不斷忽明忽滅，車廂內部光影閃爍。窗外是一片死寂的漆黑，看不到任何景色。門邊貼著一張便條紙和電車路線圖。
+聽覺：車廂內相對安靜，只有日光燈發出的「滋...滋...」電流聲，以及列車行駛在鐵軌上單調的規律震動聲。
+氣味：空氣中瀰漫著一股陳舊的灰塵味，以及淡淡的金屬鐵鏽味，沒有明顯的血腥味。
+物品：車門上貼著一張便條紙，寫著「只管前進吧 已經沒有退路了」。
+線索：便條紙的背面寫著「第三個箱子裡有藏著鑰匙」（暗示3號車廂）。
+地圖資訊：門邊的電車地圖顯示，7號車廂以後的部分被人蓄意塗黑了。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+車廂的金屬框架微微顫抖，彷彿有沉重的東西在遠處蠶食鐵軌。座位的塑膠覆層已被時間侵蝕，偶爾發出嘎吱聲。地板上散落一張皺巴巴的報紙，紙張邊緣被汗濕的指紋抹得模糊不清。
+
+列車的轟鳴持續回盪，低沉的金屬碰撞聲在車廂內迴盪。從車廂後方傳來沉悶的坍塌聲，像是什麼在牆壁之後崩裂、塌陷，回聲在空曠的空間裡擴散。
+
+氣味方面，資料庫中未提供此車廂的具體描述。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] ReAct 結束
+[main] 迴圈開始
+[main] 玩家輸入: 前往4號車廂
+[main] 構建 Context
+[ReActAgent.step] prompt 整理 : GameState, history
+[GameState.to_json] Converting state to JSON for LLM
+[SystemPromptBuilder.get_user_prompt] 格式化 user prompt
+[ReActAgent.step] ReAct loop start
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "5号车厢 通往 4号车厢 门 状态 或 障碍"} }
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 5号车厢 通往 4号车厢 门 状态 或 障碍
+[RAGRetriever.query] 查詢 : 5号车厢 通往 4号车厢 门 状态 或 障碍
+[UniversalTools.search_knowledge] result關於「5号车厢 通往 4号车厢 门 状态 或 障碍」的檢索結果：
+
+[資料 1] (來源: lore.txt)
+------------------------------
+【關鍵道具：鑰匙】
+駕駛室鑰匙：位於3號車廂。該車廂滿地雜物，容易絆倒發出聲音。
+提示：6號車廂門上的便條紙背面寫著「第三個箱子裡有藏著鑰匙」。
+------------------------------
+
+[資料 2] (來源: room.txt)
+------------------------------
+【場景：先頭車廂 (駕駛室)】
+關鍵字：1號車廂, 駕駛室, 控制台, 拉桿, 結局, 嗡嗡聲
+描述：最前端的車廂。駕駛室門鎖著（需要鑰匙）。
+視覺：精密的儀表板發出微弱的光芒。控制台上有兩根顯眼的拉桿。
+聽覺：儀器運作的低頻嗡嗡聲。
+操作：
+1. 左拉桿：煞車。
+2. 右拉桿：速度控制（往下拉=加速，往上推=減速）。
+結局分歧：
+1. 加速（拉桿往下拉）：電車衝破黑暗，達成 True End (生存)。
+2. 減速/煞車（拉桿往上推）：電車停下，被後方大嘴與怪物圍攻，達成 Bad End (全滅)。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+We will call search_knowledge for 4号车厢.{"tool": "search_knowledge", "params": {"query": "4号车厢 描述 门 状态"} }{"tool": "search_knowledge", "params": {"query": "4号车厢 环境 描述"} }
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 4号车厢 描述 门 状态
+[RAGRetriever.query] 查詢 : 4号车厢 描述 门 状态
+[UniversalTools.search_knowledge] result關於「4号车厢 描述 门 状态」的檢索結果：
+
+[資料 1] (來源: lore.txt)
+------------------------------
+【關鍵道具：鑰匙】
+駕駛室鑰匙：位於3號車廂。該車廂滿地雜物，容易絆倒發出聲音。
+提示：6號車廂門上的便條紙背面寫著「第三個箱子裡有藏著鑰匙」。
+------------------------------
+
+[資料 2] (來源: room.txt)
+------------------------------
+【場景：先頭車廂 (駕駛室)】
+關鍵字：1號車廂, 駕駛室, 控制台, 拉桿, 結局, 嗡嗡聲
+描述：最前端的車廂。駕駛室門鎖著（需要鑰匙）。
+視覺：精密的儀表板發出微弱的光芒。控制台上有兩根顯眼的拉桿。
+聽覺：儀器運作的低頻嗡嗡聲。
+操作：
+1. 左拉桿：煞車。
+2. 右拉桿：速度控制（往下拉=加速，往上推=減速）。
+結局分歧：
+1. 加速（拉桿往下拉）：電車衝破黑暗，達成 True End (生存)。
+2. 減速/煞車（拉桿往上推）：電車停下，被後方大嘴與怪物圍攻，達成 Bad End (全滅)。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "5号车厢 与 4号车厢 之间 门 是否锁住"} }{"tool": "search_knowledge", "params": {"query": "5号车厢 4号车厢 门 状态"} }
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 5号车厢 与 4号车厢 之间 门 是否锁住
+[RAGRetriever.query] 查詢 : 5号车厢 与 4号车厢 之间 门 是否锁住
+[UniversalTools.search_knowledge] result關於「5号车厢 与 4号车厢 之间 门 是否锁住」的檢索結果：
+
+[資料 1] (來源: lore.txt)
+------------------------------
+【關鍵道具：鑰匙】
+駕駛室鑰匙：位於3號車廂。該車廂滿地雜物，容易絆倒發出聲音。
+提示：6號車廂門上的便條紙背面寫著「第三個箱子裡有藏著鑰匙」。
+------------------------------
+
+[資料 2] (來源: room.txt)
+------------------------------
+【場景：先頭車廂 (駕駛室)】
+關鍵字：1號車廂, 駕駛室, 控制台, 拉桿, 結局, 嗡嗡聲
+描述：最前端的車廂。駕駛室門鎖著（需要鑰匙）。
+視覺：精密的儀表板發出微弱的光芒。控制台上有兩根顯眼的拉桿。
+聽覺：儀器運作的低頻嗡嗡聲。
+操作：
+1. 左拉桿：煞車。
+2. 右拉桿：速度控制（往下拉=加速，往上推=減速）。
+結局分歧：
+1. 加速（拉桿往下拉）：電車衝破黑暗，達成 True End (生存)。
+2. 減速/煞車（拉桿往上推）：電車停下，被後方大嘴與怪物圍攻，達成 Bad End (全滅)。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "4号车厢 环境 描述"} }{"tool": "roll_dice", "params": {"expression": "1d100", "difficulty": 30}, "reason": "使用侦查（Spot Hidden）技能检查5号车厢与4号车厢之间的门是否可通行"}
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 4号车厢 环境 描述
+[RAGRetriever.query] 查詢 : 4号车厢 环境 描述
+[UniversalTools.search_knowledge] result關於「4号车厢 环境 描述」的檢索結果：
+
+[資料 1] (來源: room.txt)
+------------------------------
+【場景：先頭車廂 (駕駛室)】
+關鍵字：1號車廂, 駕駛室, 控制台, 拉桿, 結局, 嗡嗡聲
+描述：最前端的車廂。駕駛室門鎖著（需要鑰匙）。
+視覺：精密的儀表板發出微弱的光芒。控制台上有兩根顯眼的拉桿。
+聽覺：儀器運作的低頻嗡嗡聲。
+操作：
+1. 左拉桿：煞車。
+2. 右拉桿：速度控制（往下拉=加速，往上推=減速）。
+結局分歧：
+1. 加速（拉桿往下拉）：電車衝破黑暗，達成 True End (生存)。
+2. 減速/煞車（拉桿往上推）：電車停下，被後方大嘴與怪物圍攻，達成 Bad End (全滅)。
+------------------------------
+
+[資料 2] (來源: room.txt)
+------------------------------
+【場景：4號車廂 (遇襲現場)】
+關鍵字：4號車廂, 乘務員, 急救, 血跡, 呻吟聲, 京山, 混亂
+描述：這節車廂明顯發生過混亂，是乘務員倒下的地方。
+視覺：車廂內一片狼藉，走道上有明顯的拖曳血痕和凌亂的血腳印。一名穿著制服的乘務員（京山）倒在車廂中央的座椅旁，臉色慘白，處於半昏迷狀態。
+聽覺：除了列車的行駛聲，還能聽到乘務員發出微弱、斷斷續續的痛苦呻吟聲「呃...救...」。
+氣味：空氣中瀰漫著新鮮的血腥味（鐵鏽味）以及恐懼冷汗的味道，令人感到壓抑。
+互動：
+1. 乘務員處於休克狀態，必須使用「急救」或「醫學」技能才能讓他恢復意識對話。
+2. 觀察傷口（偵查/醫學）可發現那是某種野獸般的巨大咬痕，而非單純的撞傷。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "modify_state", "params": {"path": "world.location", "value": "4號車廂", "operation": "set"}}
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool modify_state by response
+[ReActAgent.step] modify_state 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+你推開車門，走進了4號車廂。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] ReAct 結束
+[main] 觸發長期記憶摘要
+[MemoryManager.summarize] create prompt
+[MemoryManager.summarize] LLM summary
+[main] 迴圈開始
+[ReActAgent.step] prompt 整理 : GameState, history
+[GameState.to_json] Converting state to JSON for LLM
+[SystemPromptBuilder.get_user_prompt] 格式化 user prompt
+[ReActAgent.step] ReAct loop start
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "4号车厢 乘务员 血跡 场景 视觉 听觉 气味 描述"}}
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 4号车厢 乘务员 血跡 场景 视觉 听觉 气味 描述
+[RAGRetriever.query] 查詢 : 4号车厢 乘务员 血跡 场景 视觉 听觉 气味 描述
+[UniversalTools.search_knowledge] result關於「4号车厢 乘务员 血跡 场景 视觉 听觉 气味 描述」的檢索結果：
+
+[資料 1] (來源: room.txt)
+------------------------------
+【場景：4號車廂 (遇襲現場)】
+關鍵字：4號車廂, 乘務員, 急救, 血跡, 呻吟聲, 京山, 混亂
+描述：這節車廂明顯發生過混亂，是乘務員倒下的地方。
+視覺：車廂內一片狼藉，走道上有明顯的拖曳血痕和凌亂的血腳印。一名穿著制服的乘務員（京山）倒在車廂中央的座椅旁，臉色慘白，處於半昏迷狀態。
+聽覺：除了列車的行駛聲，還能聽到乘務員發出微弱、斷斷續續的痛苦呻吟聲「呃...救...」。
+氣味：空氣中瀰漫著新鮮的血腥味（鐵鏽味）以及恐懼冷汗的味道，令人感到壓抑。
+互動：
+1. 乘務員處於休克狀態，必須使用「急救」或「醫學」技能才能讓他恢復意識對話。
+2. 觀察傷口（偵查/醫學）可發現那是某種野獸般的巨大咬痕，而非單純的撞傷。
+------------------------------
+
+[資料 2] (來源: room.txt)
+------------------------------
+【NPC：乘務員 (京山 人吉)】
+關鍵字：京山, 乘務員, 受傷, NPC, 腿傷, 說話, 慘叫
+位置：初始位於 4號車廂。
+視覺：穿著制服的男性，腿部有嚴重的撕裂傷（被咬），臉色蒼白，冷汗直流。
+聽覺：發出痛苦的呻吟聲，說話聲音顫抖且急促。
+氣味：身上有濃重的汗味與血腥味。
+對話線索：他會提到「看起來像人的怪物」襲擊了乘客，並且「怪物對聲音極度敏感」。
+持有物：他原本保管著「駕駛室鑰匙」和「控制台鑰匙」，但弄丟了，推測掉在 3號車廂前門附近。
+行為模式：非常害怕，希望能停下電車逃跑。如果遇到危險，行動力低落。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+你站在4號車廂的走道上。車廂內一片狼藉：血痕被拖成長長的痕跡，血腳印散落在座椅與地板之間。中央的座椅旁，制服的乘務員京山倒在地上，臉色蒼白，半昏迷，身上沾滿新鮮血液與汗水。列車的轟鳴聲持續回盪，間或傳來他斷斷續續的呻吟：「呃…救…」。空氣中彌漫著濃重的血腥味和金屬鐵鏽味，令人胸口沉悶。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] ReAct 結束
+[main] 迴圈開始
+[main] 玩家輸入: 對他使用急救
+[main] 構建 Context
+[ReActAgent.step] prompt 整理 : GameState, history
+[GameState.to_json] Converting state to JSON for LLM
+[SystemPromptBuilder.get_user_prompt] 格式化 user prompt
+[ReActAgent.step] ReAct loop start
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "Call of Cthulhu first aid skill check difficulty"}}
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : Call of Cthulhu first aid skill check difficulty
+[RAGRetriever.query] 查詢 : Call of Cthulhu first aid skill check difficulty
+[UniversalTools.search_knowledge] result關於「Call of Cthulhu first aid skill check difficulty」的檢索結果：
+
+[資料 1] (來源: skill.txt)
+------------------------------
+【技能：First Aid (急救)】
+關鍵字：治療, 止血, 喚醒, 傷口處理, 回復HP
+描述：緊急處理傷口、喚醒昏厥者。
+規則：
+1. 耗時：一個戰鬥回合。
+2. 效果：成功可回復 1D3 HP。
+3. 限制：對「同一個傷口」只能成功使用一次（之後需用醫學）。
+4. 復活：若角色剛死亡（當回合或下一回合），急救回復到 HP+1 以上可救活。
+5. 喚醒：可讓被擊倒或昏迷的人醒來。
+------------------------------
+
+[資料 2] (來源: property.txt)
+------------------------------
+【衍生檢定：靈感 (Idea Roll)】
+公式：INT x 5
+時機：當沒有合適技能時使用。
+用途：
+1. 調查員是否能觀察或理解所見事物。
+2. 是否感受到特殊召喚或直覺。
+3. 連結線索與情報。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "roll_dice", "params": {"expression": "1d100", "difficulty": 30}, "reason": "First Aid skill check for player姜敏 on NPC京山"}
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool roll_dice by response
+[ReActAgent.step] roll_dice 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "modify_state", "params": {"path": "world.npcs", "value": [{"name": "京山 人吉", "status": "conscious"}], "operation": "set"}}
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool modify_state by response
+[ReActAgent.step] modify_state 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+你迅速對倒在地上的京山 人吉施以急救。檢定極度成功，止血並將其喚醒。京山 人吉恢復了少量體力，站起身來，仍帶著血痕但已恢復意識。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] ReAct 結束
+[main] 觸發長期記憶摘要
+[MemoryManager.summarize] create prompt
+[MemoryManager.summarize] LLM summary
+[main] 迴圈開始
+[NPCEngine.__init__]
+[main] start
+[ScenarioLoader.load] load json to Scenario
+[UniversalTools.__init__] game, retriever
+[RAGRetriever.__init__]
+ReActAgent.__init__] tools, system_prompt
+[SystemPromptBuilder.get_prompt] 提供 system prompt (tool 使用方式)
+[EventEngine.__init__] game, tools
+[main] 初始化結束
+[main] 迴圈開始
+[ReActAgent.step] prompt 整理 : GameState, history
+[GameState.to_json] Converting state to JSON for LLM
+[SystemPromptBuilder.get_user_prompt] 格式化 user prompt
+[ReActAgent.step] ReAct loop start
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "6號車廂 場景 描述 視覺 聽覺 氣味"} }
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 6號車廂 場景 描述 視覺 聽覺 氣味
+[RAGRetriever.query] 查詢 : 6號車廂 場景 描述 視覺 聽覺 氣味
+[UniversalTools.search_knowledge] result關於「6號車廂 場景 描述 視覺 聽覺 氣味」的檢索結果：
+
+[資料 1] (來源: room.txt)
+------------------------------
+【場景：2號車廂 (怪物巢穴)】
+關鍵字：2號車廂, 黑暗, 喘息聲, 循聲者, 腐臭
+描述：一片漆黑，沒有燈光。這是通往駕駛室的必經之路。
+視覺：伸手不見五指的黑暗。若有光源，可看見怪物徘徊的身影。
+聽覺：安靜得可怕，但仔細聽可以聽到令人毛骨悚然的「喀...喀...」喘息聲就在附近。
+氣味：空氣中瀰漫著一股像黴菌般的腐臭味。
+現況：這裡有循聲者在遊蕩。必須保持安靜通過。
+------------------------------
+
+[資料 2] (來源: room.txt)
+------------------------------
+【場景：6號車廂 (起始點)】
+關鍵字：起點, 醒來, 便條紙, 6號車廂, 聲音, 氣味, 燈光, 安全
+描述：這是玩家醒來的初始地點。車廂內除了玩家空無一人。
+視覺：頭頂的日光燈管老舊，不斷忽明忽滅，車廂內部光影閃爍。窗外是一片死寂的漆黑，看不到任何景色。門邊貼著一張便條紙和電車路線圖。
+聽覺：車廂內相對安靜，只有日光燈發出的「滋...滋...」電流聲，以及列車行駛在鐵軌上單調的規律震動聲。
+氣味：空氣中瀰漫著一股陳舊的灰塵味，以及淡淡的金屬鐵鏽味，沒有明顯的血腥味。
+物品：車門上貼著一張便條紙，寫著「只管前進吧 已經沒有退路了」。
+線索：便條紙的背面寫著「第三個箱子裡有藏著鑰匙」（暗示3號車廂）。
+地圖資訊：門邊的電車地圖顯示，7號車廂以後的部分被人蓄意塗黑了。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+頭頂的日光燈管老舊，忽明忽滅，光線在車廂內投射出斑駁的陰影。窗外是一片死寂的漆黑，沒有任何可辨識的景物。車門旁貼著一張便條紙，正面用粗體字寫著「只管前進吧 已經沒有退路了」。  
+
+車廂內相對寂靜，唯一的聲響是燈管發出的「滋…滋…」電流嗡鳴，與列車在鐵軌上行駛時傳來的單調震動。空氣中瀰漫著陳舊的灰塵味，混合著淡淡的金屬鐵鏽味。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] ReAct 結束
+[main] 迴圈開始
+[main] 玩家輸入: 前往車廂5
+[ReActAgent.step] prompt 整理 : GameState, history
+[GameState.to_json] Converting state to JSON for LLM
+[SystemPromptBuilder.get_user_prompt] 格式化 user prompt
+[ReActAgent.step] ReAct loop start
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "modify_state", "params": {"path": "world.location", "value": "5號車廂", "operation": "set"}}
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool modify_state by response
+[ReActAgent.step] modify_state 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+你走向车厢5的门，推开门扉，踏入下一节车厢。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] ReAct 結束
+[main] 迴圈開始
+[ReActAgent.step] prompt 整理 : GameState, history
+[GameState.to_json] Converting state to JSON for LLM
+[SystemPromptBuilder.get_user_prompt] 格式化 user prompt
+[ReActAgent.step] ReAct loop start
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "5號車廂 視覺 聽覺 氣味 描述"}}
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 5號車廂 視覺 聽覺 氣味 描述
+[RAGRetriever.query] 查詢 : 5號車廂 視覺 聽覺 氣味 描述
+[UniversalTools.search_knowledge] result關於「5號車廂 視覺 聽覺 氣味 描述」的檢索結果：
+
+[資料 1] (來源: room.txt)
+------------------------------
+【場景：2號車廂 (怪物巢穴)】
+關鍵字：2號車廂, 黑暗, 喘息聲, 循聲者, 腐臭
+描述：一片漆黑，沒有燈光。這是通往駕駛室的必經之路。
+視覺：伸手不見五指的黑暗。若有光源，可看見怪物徘徊的身影。
+聽覺：安靜得可怕，但仔細聽可以聽到令人毛骨悚然的「喀...喀...」喘息聲就在附近。
+氣味：空氣中瀰漫著一股像黴菌般的腐臭味。
+現況：這裡有循聲者在遊蕩。必須保持安靜通過。
+------------------------------
+
+[資料 2] (來源: room.txt)
+------------------------------
+【場景：6號車廂 (起始點)】
+關鍵字：起點, 醒來, 便條紙, 6號車廂, 聲音, 氣味, 燈光, 安全
+描述：這是玩家醒來的初始地點。車廂內除了玩家空無一人。
+視覺：頭頂的日光燈管老舊，不斷忽明忽滅，車廂內部光影閃爍。窗外是一片死寂的漆黑，看不到任何景色。門邊貼著一張便條紙和電車路線圖。
+聽覺：車廂內相對安靜，只有日光燈發出的「滋...滋...」電流聲，以及列車行駛在鐵軌上單調的規律震動聲。
+氣味：空氣中瀰漫著一股陳舊的灰塵味，以及淡淡的金屬鐵鏽味，沒有明顯的血腥味。
+物品：車門上貼著一張便條紙，寫著「只管前進吧 已經沒有退路了」。
+線索：便條紙的背面寫著「第三個箱子裡有藏著鑰匙」（暗示3號車廂）。
+地圖資訊：門邊的電車地圖顯示，7號車廂以後的部分被人蓄意塗黑了。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "5号车厢 描述"}}你踏入5号车厢，灯光微弱，车厢内部弥漫着陈旧的灰尘与淡淡的铁锈味，偶尔传来列车行进的低沉震动声。墙壁上贴着几张发黄的旧报纸，纸页因潮湿而黏在一起，标题已模糊不清。灯管偶尔闪烁，投射出斑驳的阴影，空气中似有一丝腐败的气息，令人不安。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 5号车厢 描述
+[RAGRetriever.query] 查詢 : 5号车厢 描述
+[UniversalTools.search_knowledge] result關於「5号车厢 描述」的檢索結果：
+
+[資料 1] (來源: room.txt)
+------------------------------
+【場景：5號車廂 (報紙線索)】
+關鍵字：5號車廂, 報紙, 新聞, 日期, 震動, 搖晃
+描述：這節車廂地板在微微震動，彷彿後方有東西在逼近。
+視覺：車廂結構似乎有些不穩，偶爾會劇烈搖晃。座位上有一份被遺落的報紙。
+聽覺：除了列車行駛聲，還能聽到後方傳來沈悶的崩塌聲。
+物品：座位上有一份皺巴巴的報紙。
+線索：報紙的日期竟然是「明天」。內容報導了「昨晚末班電車遭遇大規模恐怖事件，倖存者精神異常」。這暗示玩家可能處於時空錯亂或夢境中。
+環境變化：此時回頭看，會發現6號車廂的一半已經消失在黑暗中。
+------------------------------
+
+[資料 2] (來源: room.txt)
+------------------------------
+【場景：先頭車廂 (駕駛室)】
+關鍵字：1號車廂, 駕駛室, 控制台, 拉桿, 結局, 嗡嗡聲
+描述：最前端的車廂。駕駛室門鎖著（需要鑰匙）。
+視覺：精密的儀表板發出微弱的光芒。控制台上有兩根顯眼的拉桿。
+聽覺：儀器運作的低頻嗡嗡聲。
+操作：
+1. 左拉桿：煞車。
+2. 右拉桿：速度控制（往下拉=加速，往上推=減速）。
+結局分歧：
+1. 加速（拉桿往下拉）：電車衝破黑暗，達成 True End (生存)。
+2. 減速/煞車（拉桿往上推）：電車停下，被後方大嘴與怪物圍攻，達成 Bad End (全滅)。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+你站在5号车厢，灯光微弱，车厢微微震动。座位上放着一张皱巴巴的报纸，日期标记为“明天”，标题报道昨夜末班电车的恐怖事件。列车行进的低沉嗡鸣在耳边回荡，偶有沉闷的崩塌声从后方传来。空气中混杂着灰尘、铁锈和一丝腐败的味道。车厢结构不稳，时而剧烈摇晃。回望时，6号车厢的一半已在黑暗中消失。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] ReAct 結束
+[main] 迴圈開始
+[main] 玩家輸入: 前往車廂4
+[ReActAgent.step] prompt 整理 : GameState, history
+[GameState.to_json] Converting state to JSON for LLM
+[SystemPromptBuilder.get_user_prompt] 格式化 user prompt
+[ReActAgent.step] ReAct loop start
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "modify_state", "params": {"path": "world.location", "value": "4號車廂", "operation": "set"}}
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool modify_state by response
+[ReActAgent.step] modify_state 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+你推开门，走进了4号车厢。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] ReAct 結束
+[MemoryManager.summarize] create prompt
+[MemoryManager.summarize] LLM summary
+[main] 迴圈開始
+[ReActAgent.step] prompt 整理 : GameState, history
+[GameState.to_json] Converting state to JSON for LLM
+[SystemPromptBuilder.get_user_prompt] 格式化 user prompt
+[ReActAgent.step] ReAct loop start
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "4号车厢 场景 视觉 听觉 气味 描述 乘务员 血迹"} }
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 4号车厢 场景 视觉 听觉 气味 描述 乘务员 血迹
+[RAGRetriever.query] 查詢 : 4号车厢 场景 视觉 听觉 气味 描述 乘务员 血迹
+[UniversalTools.search_knowledge] result關於「4号车厢 场景 视觉 听觉 气味 描述 乘务员 血迹」的檢索結果：
+
+[資料 1] (來源: room.txt)
+------------------------------
+【場景：4號車廂 (遇襲現場)】
+關鍵字：4號車廂, 乘務員, 急救, 血跡, 呻吟聲, 京山, 混亂
+描述：這節車廂明顯發生過混亂，是乘務員倒下的地方。
+視覺：車廂內一片狼藉，走道上有明顯的拖曳血痕和凌亂的血腳印。一名穿著制服的乘務員（京山）倒在車廂中央的座椅旁，臉色慘白，處於半昏迷狀態。
+聽覺：除了列車的行駛聲，還能聽到乘務員發出微弱、斷斷續續的痛苦呻吟聲「呃...救...」。
+氣味：空氣中瀰漫著新鮮的血腥味（鐵鏽味）以及恐懼冷汗的味道，令人感到壓抑。
+互動：
+1. 乘務員處於休克狀態，必須使用「急救」或「醫學」技能才能讓他恢復意識對話。
+2. 觀察傷口（偵查/醫學）可發現那是某種野獸般的巨大咬痕，而非單純的撞傷。
+------------------------------
+
+[資料 2] (來源: room.txt)
+------------------------------
+【場景：2號車廂 (怪物巢穴)】
+關鍵字：2號車廂, 黑暗, 喘息聲, 循聲者, 腐臭
+描述：一片漆黑，沒有燈光。這是通往駕駛室的必經之路。
+視覺：伸手不見五指的黑暗。若有光源，可看見怪物徘徊的身影。
+聽覺：安靜得可怕，但仔細聽可以聽到令人毛骨悚然的「喀...喀...」喘息聲就在附近。
+氣味：空氣中瀰漫著一股像黴菌般的腐臭味。
+現況：這裡有循聲者在遊蕩。必須保持安靜通過。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+車廂內一片狼藉。走道上留下深紅的血痕，血腳印交錯伸向車廂深處。中央座椅旁，制服乘務員京山倒在地上，臉色蒼白，半昏迷，呼吸微弱。列車的金屬轟鳴持續回響，間或傳來乘務員斷斷續續的呻吟：「呃…救…」。空氣中瀰漫濃重的血腥味，混雜著鐵鏽的腐敗氣息，令人胸口沉悶。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] ReAct 結束
+[main] 迴圈開始
+[main] 玩家輸入: 使用急救
+[ReActAgent.step] prompt 整理 : GameState, history
+[GameState.to_json] Converting state to JSON for LLM
+[SystemPromptBuilder.get_user_prompt] 格式化 user prompt
+[ReActAgent.step] ReAct loop start
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "Call of Cthulhu 7th edition First Aid skill check difficulty"} }
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : Call of Cthulhu 7th edition First Aid skill check difficulty
+[RAGRetriever.query] 查詢 : Call of Cthulhu 7th edition First Aid skill check difficulty
+[UniversalTools.search_knowledge] result關於「Call of Cthulhu 7th edition First Aid skill check difficulty」的檢索結果：
+
+[資料 1] (來源: rules.txt)
+------------------------------
+【基本檢定規則】
+機制：使用 1d100 進行檢定。骰出數值「小於等於」技能值為成功。
+大成功：骰出 1。
+極難成功：骰出數值 <= 技能值/5。
+困難成功：骰出數值 <= 技能值/2。
+大失敗：骰出 100（或技能 < 50 時骰出 96-100）。
+------------------------------
+
+[資料 2] (來源: skill.txt)
+------------------------------
+【技能：First Aid (急救)】
+關鍵字：治療, 止血, 喚醒, 傷口處理, 回復HP
+描述：緊急處理傷口、喚醒昏厥者。
+規則：
+1. 耗時：一個戰鬥回合。
+2. 效果：成功可回復 1D3 HP。
+3. 限制：對「同一個傷口」只能成功使用一次（之後需用醫學）。
+4. 復活：若角色剛死亡（當回合或下一回合），急救回復到 HP+1 以上可救活。
+5. 喚醒：可讓被擊倒或昏迷的人醒來。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+
+
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+
+
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+
+
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+
+
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "roll_dice", "params": {"expression": "1d100", "difficulty": 30}, "reason": "First Aid skill check for NPC 京山"}
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool roll_dice by response
+[ReActAgent.step] roll_dice 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "modify_state", "params": {"path": "world.flags.京山_status", "value": "awake", "operation": "set"}}
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool modify_state by response
+[ReActAgent.step] modify_state 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+We need to roll 1d3.{"tool": "roll_dice", "params": {"expression": "1d3", "difficulty": null}, "reason": "Determine HP restored by First Aid"}
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool roll_dice by response
+[ReActAgent.step] roll_dice 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "modify_state", "params": {"path": "world.flags.京山_healed", "value": true, "operation": "set"}}
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool modify_state by response
+[ReActAgent.step] modify_state 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+京山的呼吸逐漸平穩，半昏迷的狀態被你急救的手法喚醒。他的臉色稍微回暖，受的輕傷得到 1 點回復。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] ReAct 結束
+[MemoryManager.summarize] create prompt
+[MemoryManager.summarize] LLM summary
+[main] 迴圈開始
+[main] 玩家輸入: 你怎麼了
+[ReActAgent.step] prompt 整理 : GameState, history
+[GameState.to_json] Converting state to JSON for LLM
+[SystemPromptBuilder.get_user_prompt] 格式化 user prompt
+[ReActAgent.step] ReAct loop start
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+京山抬起头，声音低沉地說：「我受了傷…需要幫忙。」
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] ReAct 結束
+[main] 迴圈開始
+[main] 玩家輸入: 你為甚麼受傷
+[ReActAgent.step] prompt 整理 : GameState, history
+[GameState.to_json] Converting state to JSON for LLM
+[SystemPromptBuilder.get_user_prompt] 格式化 user prompt
+[ReActAgent.step] ReAct loop start
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "京山 受傷 原因 末班電車"}}
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 京山 受傷 原因 末班電車
+[RAGRetriever.query] 查詢 : 京山 受傷 原因 末班電車
+[UniversalTools.search_knowledge] result關於「京山 受傷 原因 末班電車」的檢索結果：
+
+[資料 1] (來源: room.txt)
+------------------------------
+【場景：4號車廂 (遇襲現場)】
+關鍵字：4號車廂, 乘務員, 急救, 血跡, 呻吟聲, 京山, 混亂
+描述：這節車廂明顯發生過混亂，是乘務員倒下的地方。
+視覺：車廂內一片狼藉，走道上有明顯的拖曳血痕和凌亂的血腳印。一名穿著制服的乘務員（京山）倒在車廂中央的座椅旁，臉色慘白，處於半昏迷狀態。
+聽覺：除了列車的行駛聲，還能聽到乘務員發出微弱、斷斷續續的痛苦呻吟聲「呃...救...」。
+氣味：空氣中瀰漫著新鮮的血腥味（鐵鏽味）以及恐懼冷汗的味道，令人感到壓抑。
+互動：
+1. 乘務員處於休克狀態，必須使用「急救」或「醫學」技能才能讓他恢復意識對話。
+2. 觀察傷口（偵查/醫學）可發現那是某種野獸般的巨大咬痕，而非單純的撞傷。
+------------------------------
+
+[資料 2] (來源: lore.txt)
+------------------------------
+【環境設定：大嘴與車廂吞噬】
+現象：這列電車正在從尾端（7號車廂方向）被一個巨大的「黑暗之口」吞噬。
+規則：每一回合或每隔一段時間，末尾的車廂就會消失。
+視覺：7號車廂已經充滿了像內臟般的紅色肉塊與被撕碎的肢體。
+威脅：如果玩家在同一節車廂停留太久，或者試圖往回走，會面臨被吞噬的風險（即死或極高傷害）。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+京山抬起頭，聲音低沉而顫抖：「那…那不是普通的事故。剛才有什麼…巨大的東西衝進來，直接撕開了車廂的牆壁。它咬住了我的手臂，留下了這道深深的咬痕。等它離開時，我已經失血過多，倒在這裡。」
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] ReAct 結束
+[MemoryManager.summarize] create prompt
+[MemoryManager.summarize] LLM summary
+[main] 迴圈開始
+[main] 玩家輸入: 我們接下來要怎麼辦
+[ReActAgent.step] prompt 整理 : GameState, history
+[GameState.to_json] Converting state to JSON for LLM
+[SystemPromptBuilder.get_user_prompt] 格式化 user prompt
+[ReActAgent.step] ReAct loop start
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+你站在血痕斑斑的走道上，牆壁被巨大的爪痕撕開，金屬持續轟鳴。乘務員京山半清醒，手臂被深深的咬痕割裂，血液不斷流失。血腳印向車廂深處延伸，似乎指向未知的方向。
+
+接下來的行動由你決定：止血、檢查血腳印、探索牆壁裂口，或其他方案。請說明你要採取的具體行動。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] ReAct 結束
+[EventEngine] Triggering: car_7_destroyed
+[EventEngine] Auto-RAG for event: 7號車廂崩壞 大嘴
+[UniversalTools.search_knowledge] rag search : 7號車廂崩壞 大嘴
+[RAGRetriever.query] 查詢 : 7號車廂崩壞 大嘴
+[UniversalTools.search_knowledge] result關於「7號車廂崩壞 大嘴」的檢索結果：
+
+[資料 1] (來源: room.txt)
+------------------------------
+【場景：7號車廂 (死亡陷阱)】
+關鍵字：7號車廂, 血腥味, 大嘴, 殘肢, 屍體, 咀嚼聲, 危險
+描述：這裡充滿了地獄般的景象，是列車的尾端。
+視覺：地上散落著被撕裂的人類肢體與鮮血。深處原本通往8號車廂的門不見了，取而代之的是一張巨大的、不可名狀的「黑暗之口」，正在啃食車廂金屬壁。
+聽覺：傳來巨大的「嘎吱...嘎吱...」金屬扭曲聲，以及濕潤的咀嚼聲，令人毛骨悚然。
+氣味：濃烈到令人作嘔的鐵鏽味與新鮮內臟的血腥味撲面而來。
+規則：這是必死區域。若玩家執意進入或停留，將面臨被吞噬的風險（即死）。
+------------------------------
+
+[資料 2] (來源: lore.txt)
+------------------------------
+【環境設定：大嘴與車廂吞噬】
+現象：這列電車正在從尾端（7號車廂方向）被一個巨大的「黑暗之口」吞噬。
+規則：每一回合或每隔一段時間，末尾的車廂就會消失。
+視覺：7號車廂已經充滿了像內臟般的紅色肉塊與被撕碎的肢體。
+威脅：如果玩家在同一節車廂停留太久，或者試圖往回走，會面臨被吞噬的風險（即死或極高傷害）。
+------------------------------
+
+[main] 迴圈開始
+[main] 玩家輸入: 帶著乘務員一起走往車廂3
+[ReActAgent.step] prompt 整理 : GameState, history
+[GameState.to_json] Converting state to JSON for LLM
+[SystemPromptBuilder.get_user_prompt] 格式化 user prompt
+[ReActAgent.step] ReAct loop start
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "4號車廂 往 3號車廂 環境 描述"} }{
+  "tool": "search_knowledge",
+  "params": {
+    "query": "4號車廂 往 3號車廂 環境 描述"
+  }
+}
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 4號車廂 往 3號車廂 環境 描述
+[RAGRetriever.query] 查詢 : 4號車廂 往 3號車廂 環境 描述
+[UniversalTools.search_knowledge] result關於「4號車廂 往 3號車廂 環境 描述」的檢索結果：
+
+[資料 1] (來源: room.txt)
+------------------------------
+【場景：4號車廂 (遇襲現場)】
+關鍵字：4號車廂, 乘務員, 急救, 血跡, 呻吟聲, 京山, 混亂
+描述：這節車廂明顯發生過混亂，是乘務員倒下的地方。
+視覺：車廂內一片狼藉，走道上有明顯的拖曳血痕和凌亂的血腳印。一名穿著制服的乘務員（京山）倒在車廂中央的座椅旁，臉色慘白，處於半昏迷狀態。
+聽覺：除了列車的行駛聲，還能聽到乘務員發出微弱、斷斷續續的痛苦呻吟聲「呃...救...」。
+氣味：空氣中瀰漫著新鮮的血腥味（鐵鏽味）以及恐懼冷汗的味道，令人感到壓抑。
+互動：
+1. 乘務員處於休克狀態，必須使用「急救」或「醫學」技能才能讓他恢復意識對話。
+2. 觀察傷口（偵查/醫學）可發現那是某種野獸般的巨大咬痕，而非單純的撞傷。
+------------------------------
+
+[資料 2] (來源: room.txt)
+------------------------------
+【場景：3號車廂 (雜物與鑰匙)】
+關鍵字：3號車廂, 行李, 雜物, 鑰匙, 障礙, 絆倒
+描述：地板上堆滿了散落的行李箱和雜物，行走困難。
+視覺：滿地狼藉，各式背包、行李箱擋住去路。
+聽覺：若不小心踢到東西，會發出巨大的撞擊聲或滾動聲，可能引來隔壁的怪物。
+危險：如果不小心（未通過敏捷/幸運檢定），容易絆倒發出噪音。
+物品：在車廂前門附近的雜物堆中，可以找到乘務員遺失的「黑色包包」，裡面有駕駛室鑰匙。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "modify_state", "params": {"path": "world.location", "value": "3號車廂", "operation": "set"}}
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool modify_state by response
+[ReActAgent.step] modify_state 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+你扶住京山，穿過血跡斑斑的走道，推開車廂門，走進了下一節車廂。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] ReAct 結束
+[MemoryManager.summarize] create prompt
+[MemoryManager.summarize] LLM summary
+[main] 迴圈開始
+[ReActAgent.step] prompt 整理 : GameState, history
+[GameState.to_json] Converting state to JSON for LLM
+[SystemPromptBuilder.get_user_prompt] 格式化 user prompt
+[ReActAgent.step] ReAct loop start
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+{"tool": "search_knowledge", "params": {"query": "3号车厢 雜物 鑰匙 场景 描述"}}
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] use tool search_knowledge by response
+[UniversalTools.search_knowledge] rag search : 3号车厢 雜物 鑰匙 场景 描述
+[RAGRetriever.query] 查詢 : 3号车厢 雜物 鑰匙 场景 描述
+[UniversalTools.search_knowledge] result關於「3号车厢 雜物 鑰匙 场景 描述」的檢索結果：
+
+[資料 1] (來源: lore.txt)
+------------------------------
+【關鍵道具：鑰匙】
+駕駛室鑰匙：位於3號車廂。該車廂滿地雜物，容易絆倒發出聲音。
+提示：6號車廂門上的便條紙背面寫著「第三個箱子裡有藏著鑰匙」。
+------------------------------
+
+[資料 2] (來源: room.txt)
+------------------------------
+【場景：3號車廂 (雜物與鑰匙)】
+關鍵字：3號車廂, 行李, 雜物, 鑰匙, 障礙, 絆倒
+描述：地板上堆滿了散落的行李箱和雜物，行走困難。
+視覺：滿地狼藉，各式背包、行李箱擋住去路。
+聽覺：若不小心踢到東西，會發出巨大的撞擊聲或滾動聲，可能引來隔壁的怪物。
+危險：如果不小心（未通過敏捷/幸運檢定），容易絆倒發出噪音。
+物品：在車廂前門附近的雜物堆中，可以找到乘務員遺失的「黑色包包」，裡面有駕駛室鑰匙。
+------------------------------
+
+[ReActAgent.step] search_knowledge 執行結果 append 到 prompt
+[ReActAgent.step] prompt 給 LLM
+[ReActAgent.step] response :
+地板上堆滿了破舊的行李箱與散亂的背包，金屬外殼被血痕與鐵鏽覆蓋，阻礙前行。每一步踏下，都能聽見沉重的撞擊與滾動，彷彿金屬骨骼在暗處蠢蠢欲動。空氣中瀰漫著腐敗的血腥味，混雜著陳舊皮革的霉臭。車廂前門附近的雜物堆裡，一個黑色的包包半埋在碎片中，裡面露出一把暗淡的駕駛室鑰匙。
+
+[ReActAgent.step] append response to prompt
+[ReActAgent.step] ReAct 結束
+[main] 迴圈開始

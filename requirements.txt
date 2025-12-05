@@ -1,0 +1,6 @@
+requests
+pydantic
+colorama
+ollama
+chromadb
+sentence-transformers
